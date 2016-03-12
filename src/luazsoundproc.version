@@ -1,5 +1,0 @@
-luazsoundproc {
-	global: luaopen_luazsoundproc;
-	local: *;
-};
-

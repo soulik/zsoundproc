@@ -1,5 +1,5 @@
 /*
-	luazsoundproc - Lua binding for zsoundproc library
+	zsoundproc - Lua binding for zsoundproc library
 
 	Copyright 2016 Mário Kašuba
 
@@ -30,23 +30,21 @@
 */
 
 #include "common.hpp"
+#include "init_classes.hpp"
 
-namespace luazsoundproc {
-	int init(State & state){
-		return 0;
-	}
-};
+using namespace zsoundproc;
 
-extern "C" LUAZSOUNDPROC_DLL_EXPORTED int luaopen_luazsoundproc(lua_State * L){
+extern "C" ZSOUNDPROC_DLL_EXPORTED int luaopen_zsoundproc(lua_State * L){
 	State * state = new State(L);
 	Stack * stack = state->stack;
-	Module luazsoundproc_module;
+	Module zsoundproc_module;
 
 	stack->newTable();
 	
-	luazsoundproc_module["init"] = luazsoundproc::init;
+	initProcessor(state, zsoundproc_module);
+	initConstants(state, zsoundproc_module);
 
-	state->registerLib(luazsoundproc_module);
+	state->registerLib(zsoundproc_module);
 	return 1;
 }
 

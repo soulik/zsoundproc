@@ -1,5 +1,5 @@
 --[[
-		luazsoundproc - Lua binding for zsoundproc library
+		zsoundproc - Lua binding for zsoundproc library
 
 	Copyright 2016 Mário Kašuba
 
@@ -29,7 +29,7 @@
 
 --]]
 
-local zsoundproc = require 'luazsoundproc'
+local zsoundproc = require 'zsoundproc'
 local M = {}
 
 return M

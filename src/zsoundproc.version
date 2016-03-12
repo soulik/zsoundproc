@@ -1,0 +1,5 @@
+zsoundproc {
+	global: luaopen_zsoundproc;
+	local: *;
+};
+

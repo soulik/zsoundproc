@@ -1,5 +1,5 @@
 /*
-	luazsoundproc - Lua binding for zsoundproc library
+	zsoundproc - Lua binding for zsoundproc library
 
 	Copyright 2016 Mário Kašuba
 
@@ -32,13 +32,13 @@
 #include <lutok2/lutok2.hpp>
 using namespace lutok2;
 
-#if (BUILDING_LUAZSOUNDPROC || luazsoundproc_EXPORTS) && HAVE_VISIBILITY
-#define LUAZSOUNDPROC_DLL_EXPORTED __attribute__((visibility("default")))
-#elif (BUILDING_LUAZSOUNDPROC || luazsoundproc_EXPORTS) && defined _MSC_VER
-#define LUAZSOUNDPROC_DLL_EXPORTED __declspec(dllexport)
+#if (BUILDING_ZSOUNDPROC || zsoundproc_EXPORTS) && HAVE_VISIBILITY
+#define ZSOUNDPROC_DLL_EXPORTED __attribute__((visibility("default")))
+#elif (BUILDING_ZSOUNDPROC || zsoundproc_EXPORTS) && defined _MSC_VER
+#define ZSOUNDPROC_DLL_EXPORTED __declspec(dllexport)
 #elif defined _MSC_VER
-#define LUAZSOUNDPROC_DLL_EXPORTED __declspec(dllimport)
+#define ZSOUNDPROC_DLL_EXPORTED __declspec(dllimport)
 #else
-#define LUAZSOUNDPROC_DLL_EXPORTED
+#define ZSOUNDPROC_DLL_EXPORTED
 #endif
 
