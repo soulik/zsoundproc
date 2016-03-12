@@ -56,6 +56,6 @@ set_target_properties(zsoundproc
 configure_file(zsoundproc.lua ${CMAKE_BINARY_DIR}/${CMAKE_SYSTEM_PROCESSOR}/lib/zsoundproc.lua COPYONLY)
 
 target_link_libraries (zsoundproc
-	${LUA_LIBRARY}
+	${LUA_LIBRARY} libzmq
 )
 

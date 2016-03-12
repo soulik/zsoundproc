@@ -30,6 +30,7 @@
 */
 
 #include <lutok2/lutok2.hpp>
+#include <stdint.h>
 using namespace lutok2;
 
 #if (BUILDING_ZSOUNDPROC || zsoundproc_EXPORTS) && HAVE_VISIBILITY
@@ -41,4 +42,7 @@ using namespace lutok2;
 #else
 #define ZSOUNDPROC_DLL_EXPORTED
 #endif
+
+#define INIT_OBJECT(OBJ_NAME) state->registerInterface<OBJ_NAME>("zsoundproc_" #OBJ_NAME); state->stack->setField(#OBJ_NAME)
+#define OBJECT_IFACE(OBJ_NAME) state.getInterface<OBJ_NAME>("zsoundproc_" #OBJ_NAME)
 
