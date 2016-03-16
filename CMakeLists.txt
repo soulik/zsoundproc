@@ -19,6 +19,12 @@ if (LUAZMQ_USE_LIBSODIUM)
 	target_compile_definitions(libzmq PRIVATE -DHAVE_LIBSODIUM)
 endif()
 
+# Include NSFFT
+
+add_subdirectory(dependencies/nsfft-1.00)
+include_directories(dependencies/nsfft-1.00/simd)
+include_directories(dependencies/nsfft-1.00/dft)
+
 # Include Lua 5.1
 
 include(FindLua51)

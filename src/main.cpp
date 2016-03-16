@@ -42,6 +42,7 @@ extern "C" ZSOUNDPROC_DLL_EXPORTED int luaopen_zsoundproc(lua_State * L){
 	stack->newTable();
 	
 	initProcessor(state, zsoundproc_module);
+	initFFT(state, zsoundproc_module);
 	initConstants(state, zsoundproc_module);
 
 	state->registerLib(zsoundproc_module);
