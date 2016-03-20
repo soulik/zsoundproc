@@ -12,15 +12,23 @@ set(zsoundproc_h
 set(zsoundproc_objects_src
 	objects/Processor.cpp
 	objects/Node.cpp
-	objects/FFT_wrapper.cpp
+	objects/FFTCore.cpp
 	objects/FFT.cpp
+	objects/samplerateconvert.cpp
+	objects/SRC.cpp
+	objects/InputNode.cpp
+	objects/decoders/OGGVorbis.cpp
 )
 
 set(zsoundproc_objects_hdr
 	objects/Processor.hpp
 	objects/Node.hpp
-	objects/FFT_wrapper.hpp
+	objects/FFTCore.hpp
 	objects/FFT.hpp
+	objects/samplerateconvert.hpp
+	objects/SRC.hpp
+	objects/InputNode.hpp
+	objects/decoders/OGGVorbis.hpp
 )
 
 set(zsoundproc_sources
@@ -62,6 +70,6 @@ set_target_properties(zsoundproc
 configure_file(zsoundproc.lua ${CMAKE_BINARY_DIR}/${CMAKE_SYSTEM_PROCESSOR}/lib/zsoundproc.lua COPYONLY)
 
 target_link_libraries (zsoundproc
-	${LUA_LIBRARY} libzmq SIMD DFT
+	${LUA_LIBRARY} libzmq SIMD DFT libsamplerate VORBIS VORBIS_FILE OGG
 )
 

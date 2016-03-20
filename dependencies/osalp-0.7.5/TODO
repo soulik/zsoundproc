@@ -1,0 +1,63 @@
+ o Fix compilation problems with the sox module under Solaris.
+
+ o Fix code to compile strict-ANSI.
+
+ o Use libraries where possibly in format modules instead of command line
+   programs.
+
+ o Pass file stream to format modules rather then a file name.
+
+ o Add LADSPA support.
+
+ o Provide a C API.
+
+ o Add support for 64-big data.
+   Add support for floats.
+
+ o Clean up warnings in audiofile library.
+
+   We get many warnings in the audiofile library that needs to be cleaned
+   up. This needs to work for both the Solaris and Linux ports.
+
+ o Display audio chain graphically.
+
+   Need to come up with a scheme to display audio chain graphically. As we
+   get more modules the chain can get complicated. As a means of debugging
+   seeing the chain graphically would help. I saw this with the Image Vision
+   library that SGI has and it is very impressive. It also displays the cache
+   that is present for each node. It also shows how each node is hooked 
+   together.
+
+   For us we would show how each node is hooked together as well as the 
+   aflibConfig data for the input and output. Also ability to control base 
+   class stuff like enable(). I think that the Image Vision library controls 
+   this with an environment variable. Then a shared object is loaded like a 
+   module (ie dlopen).
+   This somehow displays the chain with TCL/TK.
+
+ o Class to program mixer and record input source.
+
+   We need a class (ie aflibMixerControl) that will program an audio mixer for a
+   sound card. It allows one to control volume for each input as well as what
+   inputs are available. It will allow one to select a recording source as well
+   as what recording sources are available. This should somehow be a common API
+   that will work for any platform (ie Solaris and Linux).
+
+o  Audio Spectrum buffering.
+
+   One of the problems when reading data from an audio device is that audio
+   data comes in bunchs. If one is reading 2K samples at a time then the audio
+   device may start giving data in 6K bunches. So you will get three aflibData
+   packets quickly in succession followed by a delay. For the aflibAudioSpectrum
+   class this makes for a poor display. This is especially noticeable on the
+   Solaris platform. 
+
+   Bruce Forsberg proposes a callback class seperate from the
+aflibAudioSpectrum class. This could be used by any class that needs to send
+data back to the users application. Here is one idea. Have a base class that
+implements all the APIs and basic stuff. It will call the users application
+immediatley. There will be two other capabilities, loaded via modules (ie
+dlopen), that will call the users application in a thread (pthreads) or via a
+signal. This can be selected by the user. This would allow one to buffer up
+spectrum data and then send it to the users application at constant time
+intervals. Say at 100ms intervals.

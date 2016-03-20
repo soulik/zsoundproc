@@ -1,0 +1,10 @@
+News for the Audio File Library version 0.2.0
+Michael Pruett <mpruett@sgi.com / michael@68k.org>
+
+Much has changed.
+
+Virtual formats are implemented by means of a new module system.
+
+File reading and writing are significantly faster.
+
+Error handling is quite robust.

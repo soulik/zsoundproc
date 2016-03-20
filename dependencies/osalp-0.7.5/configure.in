@@ -1,0 +1,448 @@
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl configure.in
+dnl
+
+AC_INIT
+AC_CONFIG_SRCDIR([aflib/aflibAudio.cc])
+AC_CONFIG_AUX_DIR([config])
+dnl Set host type
+
+
+dnl determine system type
+AC_CANONICAL_TARGET([])
+
+AM_INIT_AUTOMAKE(osalp,0.7.5)
+
+dnl AC_DEFINE(_GNU_SOURCE)
+
+dnl AC_DEFINE(_POSIX_C_SOURCE,199506L)
+dnl AC_DEFINE(_XOPEN_SOURCE,500)
+
+dnl Arguements for selection of modules 
+
+oss_dsp="auto"
+sun_audio="auto"
+blade="auto"
+lame="auto"
+ogg="auto"
+mpg123="no"
+
+AC_ARG_ENABLE(debug,
+			[  --disable-debug         Disable Debugging ],
+		 	CXXFLAGS="-O2";CFLAGS="-O2"
+			)
+
+AC_ARG_ENABLE(aifc,
+			[  --disable-aifc          Don't Compile AIFC File Module ],
+		 	[aifc=no],
+			[aifc=yes;audiofile=yes]	
+			)
+
+AC_ARG_ENABLE(aiff,
+			[  --disable-aiff          Don't Compile AIFF File Module ],
+			[aiff=no],
+			[aiff=yes;audiofile=yes]
+			)
+
+AC_ARG_ENABLE(au,
+			[  --disable-au            Don't Compile AU File Module ],
+			[au=no],
+			[au=yes;audiofile=yes]
+			)
+
+AC_ARG_ENABLE(wav,
+			[  --disable-wav           Don't Compile Wav File Module ],
+			[wav=no],
+			[wav=yes;audiofile=yes]
+			)
+
+AC_ARG_ENABLE(lame,
+			[  --enable-lame           Compile Lame(MP3) File Module (default: detect) ],
+			[lame=yes],
+			[lame=auto]
+			)
+
+AC_ARG_ENABLE(blade,
+			[  --enable-blade          Compile Blade(MP3) File Module (default: detect)],
+			[blade=yes],
+			[blade=auto]
+			)
+
+AC_ARG_ENABLE(mpg123,
+			[  --enable-mpg123         Compile Mpg123 File Module (default: no)],
+			[mpg123=yes],
+			[mpg123=no]
+			)
+
+AC_ARG_ENABLE(mpg,
+			[  --disable-mpg           Don't Compile Mpg(standalone) File Module ],
+			[mpg=no],
+			[mpg=yes]
+			)
+
+AC_ARG_ENABLE(sox,
+			[  --enable-sox           Compile Sox File Module (default: auto). ],
+			[sox=yes],
+			[sox=auto]
+			)
+
+AC_ARG_ENABLE(fast_sox,
+			[  --enable-fast-sox       Use fast alaw/ulaw conversion in Sox Module. ],
+			[fast_sox=yes],
+			[fast_sox=no]
+			)
+
+AC_ARG_ENABLE(ogg,
+			[  --enable-ogg            Compile Ogg-Vorbis File Module (default: detect). ],
+			[ogg=yes],
+			[ogg=auto]
+			)
+
+AC_ARG_ENABLE(force,
+			[  --enable-all            Compile all File Modules. ],
+			[force="yes"],
+			[force="no"]
+			
+			)
+
+AC_ARG_WITH(libst,
+			[  --with-libst=DIR            Path to sox library. ],
+			[SOX_PATH="$withval"]
+			
+			)
+dnl set INSTALL to BSD Comaptible install script
+AC_PROG_INSTALL
+
+dnl AC_PROG_CC - Determine C compiler to use 
+dnl Some code is compiled as c source (ie aflibSoxFile).
+dnl CC=program_name
+dnl GCC=yes if GNU 
+dnl CFLAGS=CFLAGS if CFLAGS
+dnl else CFLAGS=-g -02 if GNU
+dnl else CFLAGS=-g 
+AC_PROG_CC
+dnl AC_PROG_CXX - Determine C++ compiler to use 
+dnl GXX=yes if GNU 
+dnl CXX=proram_name
+dnl CXXFLAGS=CXXFLAGS if CXXFLAGS
+dnl else CXXFLAGS=-g -02 if GNU
+dnl else CXXFLAGS=-g 
+AC_PROG_CXX
+
+dnl C Preprocessor
+AC_PROG_CPP
+
+dnl C++ Preprocessor
+AC_PROG_CXXCPP
+
+dnl use cplusplus for all function tests
+AC_LANG([C++])
+
+AC_AIX
+
+case "$target" in
+	*solaris* )
+	if test "$GXX" = yes
+	then
+		LD=g++
+		LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+	fi
+esac
+
+AM_DISABLE_STATIC
+AC_LIBTOOL_DLOPEN
+AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+dnl define _POSIX_SOURCE and adds -posix to CC (GNU) or -Xp (OTHER)
+AC_ISC_POSIX
+dnl define const empty if unsupported
+dnl AC_C_CONST
+
+AC_TYPE_SIZE_T
+dnl define TM_IN_SYS_TIME if 'struct tm' in sys/time.h not time.h
+AC_STRUCT_TM
+dnl defines WORDS_BIGENDIAN
+AC_C_BIGENDIAN
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h limits.h malloc.h sys/ioctl.h unistd.h getopt.h byteswap.h)
+
+dnl Checks for library functions.
+dnl AC_TYPE_SIGNAL
+dnl AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(getopt memmove rand mkdir strdup strstr strerror strtol)
+
+case "$target" in
+	*cygwin* )
+		CFLAGS="$CFLAGS -mno-cygwin"
+		CXXFLAGS="$CXXFLAGS -mno-cygwin"
+		LDFLAGS="$LDFLAGS -mno-cygwin"
+esac
+
+dnl Initial values for exported symbols.
+
+dnl Extra CFLAGS if we have gcc
+if test "$GCC" = yes
+then
+    CFLAGS="$CFLAGS -Wall "
+fi
+
+dnl Extra CXXFLAGS if we have gcc
+if test "$GXX" = yes
+then
+    CXXFLAGS="$CXXFLAGS -Wall "
+fi
+
+dnl Check if math library is needed.
+
+AS_MESSAGE(checking if math library is required during link...)
+AC_CHECK_FUNC(pow)
+if test "$ac_cv_func_pow" = no
+then
+  AC_CHECK_LIB(m, pow)
+fi
+
+dnl Checks for which modules to compile.
+
+if test "$force" = yes
+then
+	AC_MSG_ERROR([forcing build of all modules])
+	ogg=yes
+	mpg=yes
+	sox=yes
+	mpg123=yes
+	lame=yes
+	blade=yes
+	audiofile=yes
+	au=yes
+	aiff=yes
+	wav=yes
+	aifc=yes
+fi
+
+if test "$sox" = auto
+then
+	if test -z "$SOX_PATH"
+	then
+		AC_CHECK_HEADERS(st.h, st=yes)
+		if test "$st" = yes 
+		then
+			AC_EGREP_HEADER([st_sample_t],st.h,sox=yes,
+[
+AC_MSG_WARN([ ---------------WARNING--------------------- ])
+AC_MSG_WARN([ st_sample_t not defined in st.h header file. ])
+AC_MSG_WARN([ Make sure you have at least version 12.17 of sox installed ])
+AC_MSG_WARN([ or use the --with-libst to set the path to the proper version of libst ])
+AC_MSG_WARN([ or else use the --disable-sox option.])
+AC_MSG_WARN([ ------------------------------------------ ])
+]
+)
+		fi
+
+	else 
+		AC_SUBST(SOX_PATH)
+
+		if test -d "$SOX_PATH"
+		then
+			sox=yes
+		fi
+	fi
+fi
+
+
+sox=no
+if test "$sox" = yes
+then
+	MODULES="$MODULES sox"
+	AC_MSG_RESULT([compiling sox file module])
+	if test "$force" = no
+	then
+		aifc=no
+		aiff=no
+		au=no
+		wav=no
+		audiofile=no
+	fi
+
+	if test "$fast_sox" = yes
+	then
+		CFLAGS="$CFLAGS -DFAST_ULAW_CONVERSION -DFAST_ALAW_CONVERSION"
+	fi
+
+	if test "$alsa_dsp" = auto
+	then
+		AC_CHECK_HEADERS(linux/asound.h, alsa_dsp=yes)
+	fi
+
+	if test "$alsa_dsp" = yes
+	then
+
+		CFLAGS="$CFLAGS -DALSA_PLAYER"
+		NEED_ALSA=1
+		PLAY_SUPPORT=1
+		AC_MSG_RESULT([Using alsa device module])
+	fi
+fi
+
+
+if test "$oss_dsp" = auto
+then
+	AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h, oss_dsp=yes)
+fi
+
+if test "$oss_dsp" = yes
+then
+	CFLAGS="$CFLAGS -DOSS_PLAYER"
+	NEED_OSS=1
+	PLAY_SUPPORT=1
+
+	if test "$sox" = yes 
+	then
+		CFLAGS="$CFLAGS -DOSS_PLAYER"
+		NEED_OSS=1
+		PLAY_SUPPORT=1
+	else
+		MODULES="$MODULES oss"
+	fi
+
+	AC_MSG_RESULT([Using oss device module])
+fi
+
+if test "$audiofile" = yes
+then
+	AUDIOFILE_PATH="audiofile-0.2.0"
+	MODULES="$MODULES $AUDIOFILE_PATH"
+	AC_CONFIG_SUBDIRS([formatlib/audiofile-0.2.0])
+	AC_MSG_RESULT([compiling static audiofile library])
+
+	if test "$aifc" = yes
+	then
+		MODULES="$MODULES aifc"
+		AC_MSG_RESULT([using aifc file module])
+	fi
+
+	if test "$aiff" = yes
+	then
+		MODULES="$MODULES aiff"
+		AC_MSG_RESULT([using aiff file module])
+	fi
+
+	if test "$au" = yes
+	then
+		MODULES="$MODULES au"
+		AC_MSG_RESULT([using au file module])
+	fi
+
+	if test "$wav" = yes
+	then
+		MODULES="$MODULES wav"
+		AC_MSG_RESULT([using wav file module])
+	fi
+
+fi
+
+if test "$mpg123" = auto
+then
+	AC_CHECK_PROGS(MPG123PATH,mpg123,mpg123=yes)
+fi
+
+if test "$mpg123" = yes 
+then
+	MODULES="$MODULES mpg123"
+	AC_MSG_RESULT([using mpg123 file module])
+fi
+
+if test "$blade" = auto 
+then
+	AC_CHECK_PROGS(BLADEPATH,blade,blade=yes)
+fi
+
+if test "$blade" = yes 
+then
+	MODULES="$MODULES blade"
+	AC_MSG_RESULT([using blade file module])
+fi
+
+if test "$lame" = auto
+then
+	AC_CHECK_PROGS(LAMEPATH,lame,lame=yes)
+fi
+
+if test "$lame" = yes
+then
+	MODULES="$MODULES lame"
+	AC_MSG_RESULT([using lame file module])
+fi
+
+if test "$sun_audio" = auto
+then
+	AC_CHECK_HEADERS(sys/audioio.h sun/audioio.h, sun_audio=yes)
+fi
+
+if test "$sun_audio" = yes
+then
+	CFLAGS="$CFLAGS -DSUNAUDIO_PLAYER"
+	NEED_SUNAU=1
+	PLAY_SUPPORT=1
+	MODULES="$MODULES solaris_dev"
+	AC_MSG_RESULT([using sun audio file module])
+fi
+
+if test "$ogg" = auto
+then
+	AC_CHECK_HEADERS(vorbis/vorbisfile.h, ogg=yes)
+fi
+
+if test "$ogg" = yes 
+then
+	MODULES="$MODULES ogg"
+	AC_MSG_RESULT([using ogg-vorbis file module])
+fi
+
+if test "$mpg" = yes
+then
+	MODULES="$MODULES mpg"
+	AC_MSG_RESULT([using mpg file module])
+fi
+
+dnl fi
+	
+
+AC_CHECK_PROGS(DOXYGEN, doxygen)
+AM_CONDITIONAL(OSALP__HAS_DOXYGEN, test -n "$DOXYGEN")
+if test -n "$DOXYGEN" ; then
+AC_DEFINE(OSALP__HAS_DOXYGEN)
+fi
+
+includedir=$includedir/aflib
+datadir=$libdir
+
+CXXFLAGS="$CXXFLAGS -DMODULE_INSTALL_DIR=\"\\\"\$(prefix)/lib/aflib\\\"\""
+AC_SUBST(MODULES)
+AC_SUBST(AUDIOFILE_PATH)
+
+
+dnl LIBS="-L. $LIBS"
+
+dnl Generate output files...
+
+AM_CONFIG_HEADER(config.h)
+AH_TEMPLATE(OSALP__HAS_DOXYGEN,  [define if you have Doxygen])
+AC_CONFIG_FILES([Makefile aflib/Makefile formatlib/Makefile formatlib/aifc/Makefile formatlib/aiff/Makefile formatlib/au/Makefile formatlib/wav/Makefile formatlib/mpg123/Makefile formatlib/mpg/Makefile formatlib/blade/Makefile formatlib/lame/Makefile formatlib/oss/Makefile formatlib/solaris_dev/Makefile formatlib/ogg/Makefile doc/Makefile doc/html/Makefile ])
+AC_OUTPUT
+
+echo
+echo "Configure finished.  Do 'make; make install' to compile and install osalp."
+echo
+
+dnl Local Variables:
+dnl comment-start: "dnl "
+dnl comment-end: ""
+dnl comment-start-skip: "\\bdnl\\b\\s *"
+dnl compile-command: "autoconf"
+dnl End:

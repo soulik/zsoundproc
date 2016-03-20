@@ -2,12 +2,12 @@
 #define ZSOUNDPROC_OBJECTS_FFT_H
 
 #include "common.hpp"
-#include "objects/FFT_wrapper.hpp"
+#include "objects/FFTCore.hpp"
 
 namespace zsoundproc {
-	class FFT : public Object<FFT_wrapper> {
+	class FFT : public Object<FFTCore> {
 	public:
-		explicit FFT(State * state) : Object<FFT_wrapper>(state){
+		explicit FFT(State * state) : Object<FFTCore>(state){
 			LUTOK_PROPERTY("executionPlan", &FFT::getExecutionPlan, &FFT::setExecutionPlan);
 			LUTOK_PROPERTY("input", &FFT::getInput, &FFT::setInput);
 			LUTOK_PROPERTY("output", &FFT::getOutput, &FFT::setOutput);
@@ -31,34 +31,34 @@ namespace zsoundproc {
 
 		}
 
-		FFT_wrapper * constructor(State & state, bool & managed);
-		void destructor(State & state, FFT_wrapper * object);
+		FFTCore * constructor(State & state, bool & managed);
+		void destructor(State & state, FFTCore * object);
 
-		int getExecutionPlan(State & state, FFT_wrapper * object);
-		int setExecutionPlan(State & state, FFT_wrapper * object);
+		int getExecutionPlan(State & state, FFTCore * object);
+		int setExecutionPlan(State & state, FFTCore * object);
 
-		int getInput(State & state, FFT_wrapper * object);
-		int setInput(State & state, FFT_wrapper * object);
+		int getInput(State & state, FFTCore * object);
+		int setInput(State & state, FFTCore * object);
 
-		int getOutput(State & state, FFT_wrapper * object);
-		int setOutput(State & state, FFT_wrapper * object);
+		int getOutput(State & state, FFTCore * object);
+		int setOutput(State & state, FFTCore * object);
 
-		int execute(State & state, FFT_wrapper * object);
+		int execute(State & state, FFTCore * object);
 
-		int getDataType(State & state, FFT_wrapper * object);
-		int getMode(State & state, FFT_wrapper * object);
-		int getFFTLength(State & state, FFT_wrapper * object);
-		int getIsRealTransform(State & state, FFT_wrapper * object);
-		int getNoBitTraversal(State & state, FFT_wrapper * object);
-		int getTestRun(State & state, FFT_wrapper * object);
+		int getDataType(State & state, FFTCore * object);
+		int getMode(State & state, FFTCore * object);
+		int getFFTLength(State & state, FFTCore * object);
+		int getIsRealTransform(State & state, FFTCore * object);
+		int getNoBitTraversal(State & state, FFTCore * object);
+		int getTestRun(State & state, FFTCore * object);
 
-		int getModeMax(State & state, FFT_wrapper * object);
-		int getTypeAvailability(State & state, FFT_wrapper * object);
-		int getSizeOfReal(State & state, FFT_wrapper * object);
-		int getSizeOfVect(State & state, FFT_wrapper * object);
-		int getVectorLen(State & state, FFT_wrapper * object);
-		int getModeAvailability(State & state, FFT_wrapper * object);
-		int getModeName(State & state, FFT_wrapper * object);
+		int getModeMax(State & state, FFTCore * object);
+		int getTypeAvailability(State & state, FFTCore * object);
+		int getSizeOfReal(State & state, FFTCore * object);
+		int getSizeOfVect(State & state, FFTCore * object);
+		int getVectorLen(State & state, FFTCore * object);
+		int getModeAvailability(State & state, FFTCore * object);
+		int getModeName(State & state, FFTCore * object);
 	};
 };
 

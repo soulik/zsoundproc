@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 3.1.0)
+
 project (zsoundproc)
+
+list(APPEND CMAKE_MODULE_PATH "${zsoundproc_SOURCE_DIR}/cmake")
 
 # Include libzmq
 
@@ -24,6 +27,34 @@ endif()
 add_subdirectory(dependencies/nsfft-1.00)
 include_directories(dependencies/nsfft-1.00/simd)
 include_directories(dependencies/nsfft-1.00/dft)
+
+# Include libsamplerate
+
+add_subdirectory(dependencies/libsamplerate-0.1.8)
+include_directories(dependencies/libsamplerate-0.1.8/src)
+
+# Include libMODplug
+
+add_subdirectory(dependencies/libmodplug-0.8.8.4)
+include_directories(dependencies/libmodplug-0.8.8.4/include)
+
+# Include libVorbis
+
+add_subdirectory(dependencies/libvorbis-1.3.3)
+include_directories(dependencies/libvorbis-1.3.3/include)
+
+# Include libOGG
+
+if (NOT TARGET OGG)
+	add_subdirectory(dependencies/libogg-1.3.1)
+endif()
+
+include_directories(dependencies/libogg-1.3.1/include)
+
+# Include libMAD
+
+add_subdirectory(dependencies/libmad-0.15.1b)
+include_directories(dependencies/libmad-0.15.1b)
 
 # Include Lua 5.1
 

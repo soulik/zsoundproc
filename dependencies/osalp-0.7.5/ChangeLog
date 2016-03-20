@@ -1,0 +1,408 @@
+Changelog
+
+------------------------------------------------------
+
+02/22/2008     V 0.7.5 Beta released.
+
+-------------------------------------------------------
+02/22/2008 Darrick Servis <darrick@dcn.org> 	
+
+  o added doc/html/api to distribution.
+
+------------------------------------------------------
+
+07/03/2002     V 0.7.3 Beta released.
+
+-------------------------------------------------------
+07/01/02 Darrick Servis <darrick@dcn.org> 	
+
+	o aflib/aflibConvertor.cc - Minor changes to SrcUP and SrcUD to fix
+	  compilation errors with Visual C++.  Thanks to 
+	  "Armin Gerritsen" <armin.gerritsen@hetnet.nl> for pointing this
+	  out and Julius Smith <jos@w3k.org> for providing the fix.
+
+	o examples/osalp - Added configure script and getopt_long coding.  
+	  Now compiles for FreeBSD and Solaris.
+
+	o aflib/aflibDateTime.cc - Changed localtime_r to localtime.  Now
+	  compiles for Darwin.  This was the only Posix extension used in
+          code.
+
+-------------------------------------------------------
+05/10/02 Darrick Servis <darrick@dcn.org> 	
+
+	o In aflibAudioSampleRateCvt.  Fixed memory leek in compute_segment.
+
+	o configure. Added tests for blade, lame and mpg123 executibles. 
+	  Repaired module install location.  Added option for path
+	  to sox source code.  Upgraded to autoconf-2.5.3, automake-1.6.1
+	  and libtool-1.4.2.  
+	
+	o cleaned up the osalp example.  added testsox.sh script.  
+	  added pitch mode.
+
+	o handled errors for file opening in player and editor examples.
+
+
+-------------------------------------------------------
+03/10/02 Darrick Servis <darrick@dcn.org> 	
+
+	o In aflibAudioMixer.  compute_segment now clips the final mix to the
+	  limits of it's data size.  This fixes the amplitude problem where
+ 	  having more then one mix with amplitude 100 would cause distortion.
+	  Result is a default amplitude of 100 is sufficient for most mixes.
+
+	o In aflibAudioStereoToMono. Added setAmplitude function.  Renamed 
+	  setMix function to setMixType.  Added support for replacing
+	  parent (addParent will replace existing parent).
+
+	o In aflibAiffFile, aflibAifcFile, aflibAuFile and aflibWavFile.  
+	  Fixed bug in afread where position was over running the length 
+	  of the file.
+
+	o Added ogg to configure script.
+
+-------------------------------------------------------
+02/15/02 Darrick Servis <darrick@dcn.org> 	
+
+	o Changed format of Changelog putting most recent entries up top.
+	o Renamed CHANGES to ChangeLog.
+	o Renamed TASKS to TODO.
+	o Fixed bug in aflibAudioFile constuctor that caused segfault if
+	  _file_return was NULL.
+	o Fixed bug in aflibMemCache which caused position = -1 to be
+	  cached.
+	o Updated aflibAudioSampleRateCvt to handle -1 position.
+	  Added isChannelsSupported function since class only handles
+	  up to two channels.	
+	o Fixed bug in aflibConvertor which caused too many samples
+	  to be processed if the requested number of samples was more
+	  then what was actually availible (i.e at the end of file).
+	  The fix is a guess at how many samples to process and more
+	  work will need to be done to make it more accurate.  
+	o Fixed bug in aflibAudio which caused _cvt to receive the
+	  wrong config if a _mix was also added internally.
+	o Added virtual setPowerMeter and setAudioSpectrum functions to
+	  aflibAudioSpectum class so one may inherit this class and do
+	  what they want when these functions are called.  This will allow
+	  more then one power meter and/or audio specturm per app.
+	o In aflibAudio, getName() and compute_segment() no longer required
+	  to be implemented.
+	o Changed aflibSoxFile module to link to external libst.a library.
+	o Added aflibDebug class to consolidate calls to stderr and getenv.
+	o Added file conversion test scripts to osalp directory.
+	o Cleaned up osalp example to better explain how to use the library.
+	
+
+------------------------------------------------------
+
+02/16/2002    
+	o Added ogg format submited by Jeroen Versteeg
+02/03/2002    
+	o Fixed file passing to mpg123.
+08/20/2001    Added AIX changes and namespaces.
+08/23/2001    Added type conversions for sox module for AIX.
+08/24/2001    Bug fix for AU-ALAW and AU-ULAW file writing.
+08/24/2001    Added support for stdin and stdout in Sox File Module.
+08/24/2001    Cleaned up and commented configure.in.
+08/24/2001    Have aflibFile return AFLIB_CANT_AUTO_TYPE if file type is
+ 		not supported rather then printing dlopen error.
+08/30/2001    Added AIX stuff to config files
+12/27/2001    Allow audio file on command line for example player.
+12/29/2001    Add removeSegmentsFromInput for aflibAudioEdit plus bug fixes.
+
+------------------------------------------------------
+
+08/10/2001     V 0.7.2 Beta released.
+
+------------------------------------------------------
+
+05/21/2001    Added new Butterworth filter class aflibAudioBWFilter.
+06/17/2001    Updated files with new email address forsberg@tns.net
+06/26/2001    Updates library to be able to compile with gcc 3.0.
+07/18/2001    Added aflibAudioMemoryInput class.
+07/19/2001    Added AFLIB_DATA_32S data type for 32 bit signed data.
+08/04/2001    Fixed aflibData::convertToSize for many conversions.
+08/04/2001    Converted aflibConverter class to use base types instead of HWORD etc. 
+              Because these are duplicated in windows.
+08/05/2001    Changed sample rate conversion classes to include a volume factor for
+              the small and large filters.
+08/06/2001    Changed all STL files from the form stl.h to <stl>.
+
+------------------------------------------------------
+
+05/20/2001     V 0.7.1 Beta released.
+
+------------------------------------------------------
+
+12/15/2000     Fixed passing of file name to external modules like lame, blade, 
+		and mpg. Now accounts for blanks in file names.
+12/25/2000     Changed prog directory to osalp and added README and 
+		functionality for command line program.
+01/02/2001     Fixed bug in aflibAudioEdit class with getSegment function. Also 		fixed some compile warnings in formatlib sub dirs.
+01/03/2001     Made some code review changes.
+02/21/2001     Made fix for freebsd. Changed atoll to sscanf.
+03/12/2001     added support for passing format string to aflibAudioFile::open.
+
+		BUG FIX: added aflibAudio::isChannelsSupported(int& channels).
+		Some file modules would crash or write improper data if the 
+		number of channels in the aflibData object sent was not
+		supported.  Also added aflibAudio::convertChannels to do this.
+
+		Cleaned up aflibData::convetToSize.  
+		- use glibc byte swap it they have it.
+		- moved bit shifting to macros.
+		- got rid of a intermediries.
+		- moved endian checks outside of conversion routines.
+
+		BUG_FIX: fixed bug in aflibSampleData::process where
+		aflib would crash if premature EOF
+
+		Rewrote aflibFile::parseModuleFile() to query modules
+		rather then using aflib_module.list file. 					
+
+03/17/2001    Bug Fixes:
+                1. Removed extra magic lines for wav and au. Only need to 
+		recognize one.
+                2. Change magic for mp3 from 1d3 to ID3.
+                3. Changed format names from AU to AU-ALAW and AU-ULAW.
+                4. Fixed audiofile lib for aiff format with tags on 0 length.
+
+03/23/2001    Fixed cache problem in aflibAudio::process. When a node was at 
+		the start of a chain and all data was retrieved from cache the 
+		aflibConfig data was not being set in the aflibData object.
+04/07/2001    1. Fix crash when a zero length copyright text field is in an 
+		aiff format file.
+              2. For au format if an unsupported compression file (ie G721) is 
+		selected then library will crash sometimes. Problem is track 
+		structure is not being initialized correctly.
+              3. For au format for compression modes the total frames was coming
+		back half of what it should be and thus only half of file was 
+		being played.
+              4. Fixed distortion for a-law and mu-law stereo files for both wav
+		and au.
+04/08/2001    1. Fixed write of alaw and ulaw. Data was scrambled and size was 
+		wrong.
+              2. Also audiofile library does not support 8U data for alaw and 
+		ulaw so we now convert to 16S first for wav and au.
+04/15/2001    Changed audiofile library to write WAVE ALAW and MULAW formats for 		
+		WAVE instead of IBM. I believe the WAVE's are more popular.
+04/21/2001    Fix mpg module. Corrected run-on problem with some mp3 files and 
+		also fixed a crash with some other mp3 files.
+04/22/2001    Added comments to many files for doxygen generation.
+              Removed old files in formatlib/mp3/mpg and formatlib/linux_dev.
+              Renamed files in mpg123 to Mpg123 to distinguish from Mpg for 
+		doxygen.
+              Since number of channels can be changed automatically I changed 
+		aflibAudioEdit to accept inputs with different number of 
+		channel inputs.
+04/26/2001    Changed loading of modules from RTLD_NOW to RTLD_LAZY. This was 
+		needed for Solaris since the mpg module had unresolved errors 
+		for -lnsl.
+04/29/2001    Added sox to Makefile.am for make dist option. Also added sox 
+		include files.
+              Fixed sox module for config data passed into open. This is not to 
+		be used but returned. Was using junk data. Also fixed a-law and 
+		u-law in sox module.
+04/30/2001    Fix AIFC format with markers. Sox module does not allow markers 
+		without instruments. My docs says markers can be used.
+              Fixed sox module for AU format with A-LAW encoding. Added a break 
+		statement to case statement. Submitted bug report to sox 
+		maintainer.
+              Fixed g721 decoding for AU format. Not 100% yet but better.
+05/03/2001    Fixed recoginition of Amiga 8svx files in sox modules.
+              Fixed Amiga 8svx files in sox source. They were not setting length
+		field. I will submit a bug report to maintainer.
+              Fixed close of aflibSoxFile.cc when an error occurs during open 
+		for read. File would crash.
+              Fixed initialization of eof flag. Not being set to 0.
+              Fixed crash in Sound Blaster VOC format code fox sox module.
+05/08/2001    Made some partial fixes to sox modules for WAVE a-law & u-law 
+		write. Also VOC write and au G721 write.
+
+------------------------------------------------------
+
+12/03/2000     V 0.7 Beta released. Added support for Solaris Sparc platform. 
+		Also fixed Makefile and install system.
+
+------------------------------------------------------
+
+11/15/2000     Changed entire makefile system. Now we can make and install 
+		libraries.  Sample applications are made seperately.
+ 11/21/2000     Made initial Solaris on Sparc and Big Endian changes.
+ 11/29/2000     More Solaris changes. Fixed Solaris recording to device.
+
+------------------------------------------------------
+
+10/02/2000     V 0.6 Alpha released. Many bug fixes including improvements. 
+		Added WAV AU file formats for a-law and mu-law. Also documents 
+		are now in doc directory in html and man page format.
+
+------------------------------------------------------
+
+08/23/2000     Made many optimizations to the aflibMemCache class. Data was being
+                copied and copied all over. Now just maintain a common pointer. Changed
+                from STL set to map so that aflibMemNode data can be changed.
+ 08/24/2000     Moved mp3 play file support to a seperate file. It is now called
+                aflibMpgFile. This was in both blade and lame files. Now blade and
+                lame only write and mpg will read.
+ 08/25/2000     Changed name of aflibAudioClip to aflibEditClip. Now all aflibAudio derived
+                objects start with aflibAudio as the file name.
+ 08/26/2000     Modified comments in library so I can use the doxygen tool (www.
+                doxygen.org) to generate documentation.
+ 08/27/2000     Changed aflibDevFile to use different size buffers depending on size of
+                data to be played or recorded. Setup a 0.2 second buffer for play and
+                0.5 second buffer for record.
+ 08/28/2000     Made some changes to editor application to get it working again.
+ 09/03/2000     Made changes to auto recognition of file formats. Now an entry in the
+                aflib_modules.list file can have more than one MAGIC line. This is since
+                some formats, like mp3, can be recognized in multiple ways. Also two new
+                flags can be entered in a MAGIC line. Instead of a position one can 
+                enter a -1 or -2. A -1 causes a search of the file for the following
+                items. The position in following items are relative to where the -1 item
+                was found. A -2 ends the search mode. Also added with this new
+                capability is another way to search for MP3. Some MP3's actually have a
+                RIFF WAVE header followed by a data field where the MP3 starts. This can
+                get confusing since RIFF WAVE is used by WAV format.
+ 09/07/2000     Fixed dumpChain routine so that it works again. Also fixed mixing in 
+                example program prog. Fixed the passing of config data in aflibAudio base
+                class when a node is disabled. Added aflibAudioStereoToMono class. It
+                is derived from aflibAudioMixer class and is a convience class for mixing
+                either a stereo or mono signal to a mono signal.
+ 09/08/2000     Added setItem & getItem as virtual function of the aflibFile base class.
+                This can be used for getting and setting information that is specific
+                to a particular file format.
+                Added setItem to aflibDevFile class with an item of AFLIB_DEV_ITEM_BUFFER.
+                This allows the setting of buffer lengths during record and playback.
+ 09/09/2000     Fixed mulaw au format write in audiofile library. Added alaw for au and
+                wav formats and mulaw for wav format in audiofile library. Also now
+                return error code for aflibMpgFile class when application mpg123 is
+                not found. Also route stderr to /dev/null for all modules that call
+                an external application.
+ 09/17/2000     Made more fixes to editor sample program and fixes to aflibAudio and
+                aflibAudioEdit for multiple parent support.
+ 10/01/2000     Used electric fence memory debugging tool and fixed several memory
+                errors with library.
+
+------------------------------------------------------
+
+08/21/2000     V 0.5 Alpha released. Bug fixes plus added audio mixing class,
+                aflibAudioMixer. Also started command line example program: prog.
+
+------------------------------------------------------
+
+07/16/2000     Added LiteClue widget to player test program to provide bubble help.
+ 08/19/2000     Added aflibAudioMixer class. This allows mixing any number of inputs
+                and combinations to an output with any number of channels. Also added
+                ability in the aflibAudio base class to handle multiple parents of
+                an object. Also added replaceParent in the aflibChain base class for
+                derived classes to use.
+
+------------------------------------------------------
+
+07/09/2000     V 0.4 Alpha released. Bug fixes plus added automatic data conversion
+                routines. Also added memory caching class.
+
+------------------------------------------------------
+
+03/19/2000     Found that audiofile library was returning a format of signed data for 8 bit
+                WAV data. It should return unsigned format for 8 bit data. Fixed local
+                audiofile library and submitted bug fix to author.
+ 05/01/2000     Added three new virtual functions to the aflibAudio base class that derived
+                classes can override. They are isDataSizeSupported(), isEndianSupported(),
+                and isSampleRateSupported(). These will be called by the base class. This
+                allows derived classes to indicate what kind of data is supported. These
+                three items will be automatically converted when needed.
+                To the aflibAudio base class 4 new virtual functions have been added. They are
+                setInputConfig(), getInputConfig(), setOutputConfig(), getOutputConfig().
+                These allow one to set the input audio configuration and output audio
+                configuration of each derived class. Thus a derived class can map the
+                audio configuration data. For instance the sample rate converter class can
+                change the sample rate in the output audio data configuration with
+                respect to the input.
+                Deleted the aflibAudioFileWrapper and all derived classes. Instead used a
+                "C" function in each file object to allocate a file object. This removes the
+                need to mangle a name for the wrapper object.
+                Added logic to preprocess chain the first time data is processed to see
+                if sample rate conversion is needed.
+ 06/04/2000     Changed the algorithm used in the aflibFFT class. The one I added I believe
+                to be in the public domain. I removed the one that was there because it was
+                GPL and not LPGL. Now that I have the public domain algorithm the library
+                is LGPL. Also the aflibAudioSpectrum was modified for this new FFT algorithm.
+ 06/21/2000     Fixed memory bug (array overrun) in aflibEnvFile.cc.
+ 07/05/2000     Added memory caching class for derived classes that need it. It is not an
+                optimal algorithm but it will do for now. Made aflibAudio derived from this
+                class so that all derived objects pick this up. By default it is disabled since
+                most classes will not use it. Changed aflibAudioSampleRateCvt class to use
+                this class by default. Users can still go back to built in caching for this
+                class by disabling caching in the base class. Also added aflibAudioPitch class.
+                This simply overrides the aflibAudioSampleRateCvt class and implements a new
+                setInputConfig function so that the output sample rate is the same as the input
+                sample rate thus giving the illusion of pitch change.
+ 07/08/2000     Fixed process function in aflibAudioEdit class. Undated it with recent
+                changes.
+
+------------------------------------------------------
+
+02/23/2000     V 0.3 Alpha released. Added plugable module file support. Added au, aiff
+                aifc, and blade & lame encoder formats.
+
+------------------------------------------------------
+
+02/10/2000     Changed num_samples in process function of aflibAudio object to now be a
+                reference. This way objects that only return a portion of the data requested
+                can set the actual number. This is needed when reading from an audio file.
+                The last block read might only be a partial block. Users calling process 
+                should read num_samples after the call to determine the actual data
+                processed.
+ 02/14/2000     Changed aflibFile so that audio file format derived objects are loaded
+                dynamically and thus apps don't need to link to them. Also added AUTO type
+                so audio files will be automattically recongnized. Currently available
+                file formats are specified by an ASCII file called aflib_modules.list. The
+                path to this file must be set as environment var AFLIB_MODULE_FILE_DIR.
+                Also added several new audio file formats by using the audiofile library.
+                Changed WAVE to use audiofile library, added aiff, aifc, and au. Also
+                Created two mpeg audio objects. Both use mpg123 to read mp3 files. One
+                uses the lame encoder and the other the blade encoder.
+ 02/19/2000     Made changes to player application to put description in upper left hand
+                corner. Also added getFormat member function for aflibFile and
+                aflibAudioFile. For auto format mode in aflibFile this will return the format
+                of the file being played.
+                After playing many aiff files and not having them play I did an investigation.
+                It turns out that these files are not formatted according to the AIFF spec. They
+                are adding an extra 8 bytes to the size field. This causes problems for the
+                audiofile library. I submitted a suggested workaround to the author of the
+                audiofile library.
+ 02/20/2000     Made changes to add three new values to each file format. They are value1,
+                value2, and value3. These are used in order to select additional capabilities
+                for a format. For instance to select output bit rates for mp3. Or a compression
+                type for a format.
+
+------------------------------------------------------
+
+01/08/2000     V 0.2 Alpha released. Three new classes.
+
+------------------------------------------------------
+
+12/23/1999     Added new class aflibAudioConstantSrc.
+ 01/08/2000     Added new classes aflibConverter and aflibAudioSampleRateCvt. This provides
+                convertion of sample rates from one to another. Also minor fix for
+                aflibAudioConstantSrc. The incorrect mid point was being used.
+
+------------------------------------------------------
+
+12/22/1999     V 0.1.1 Alpha released. Mostly bug fixes.
+
+------------------------------------------------------
+
+11/05/1999     Made changes to aflibChain base class so that if audio object is removed
+                from chain that all nodes are updated and chain reforms and is not
+                broken.
+                Added dumpChain function to aflibChain.
+ 11/07/1999     Fixed aflibAudioRecorder. Also modified player to perform audio timer
+                recording correctly.
+ 11/08/1999     Performed work on editor to add functionality.
+ 11/13/1999     Removed addInput and removeInput from aflibAudioEdit. Instead get callbacks
+                from aflibChain when addParent or removeParent are called.
+ 12/22/1999     Added lib directory. Changed last bstring to string. Updated mp3 file
+                library to use latest mpg123.

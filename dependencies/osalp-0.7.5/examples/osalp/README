@@ -1,0 +1,81 @@
+This is a sample command line example of how to ue the OSALP library. It
+will perform many functions as outlined below. 
+
+COMPILE:
+make
+
+USAGE:
+Users should call the program using the start_osalp script.
+
+INSTRUCTIONS:
+This program will parse arguments passed into it in order to process
+an audio file. There are many kinds of arguments accepted. The first
+class of arguments will select what mode to put the program in. Some
+of the mode arguments require an argument as well.
+  MODES
+ 
+<Audio file to be played>               === Play mode to audio device
+-p <Audio file to pitch shift>          === Record mode from audio device
+-m <Audio file to mix with play file>   === Play mix mode
+-i <Audio file to ID>                   === ID audio file
+-h                                      === Print help message
+-a                                      === Print supported audio formats
+
+The next class of arguments are modifier arguments. They will modify the
+behavior of the modes above. They only apply to certain modes above.
+  FILE FORMAT MODIFIERS
+-s <Sample rate as ASCII string>	=== set sample rate
+-f <Format to use from -a mode>		=== set format
+-b 					=== signed byte data
+-B 					=== unsigned byte data
+-w 					=== signed word data
+-W 					=== unsigned word data
+-c <channels>				=== set channels
+
+  Convert/Play/Record Mode
+  ---------
+start_osalp [format options] input_file [format options] [output_file] 
+
+The above will play an audio file input_file to the default audio device if no 
+output_file is given. If no format_options are given for the input_file then
+the file will be auto-detected.  If you want to write the file to a different 
+device or file give a output_file and optional output options.
+
+  Pitch Mode
+  ---------
+start_osalp -p <pitch rate> [format options] input_file [format options] [output_file] 
+
+The above will play an audio file input_file to the default audio device if no 
+output_file is given. If no format_options are given for the input_file then
+the file will be auto-detected.  If you want to write the file to a different 
+device or file give a output_file and optional output options.
+
+  Mix Mode
+  --------
+start_osalp -m [format options] input_file1 [format options] input_file2 
+		[format options] [output_file] 
+
+The above will mix two audio files together equally and play them to an audio
+device. The audio files can be any supported OSALP audio formats and don't
+have to be the same.
+
+  ID Mode
+  -------
+start_osalp -i audio.wav
+
+The above will print out information regarding the audio file.
+
+  Help Mode
+  ---------  
+start_osalp -h
+
+The above will print out a help message indicating the options available.
+
+  Audio Format Mode
+  -----------------
+start_osalp -a
+
+The above will print out the audio formats supported for this application. It
+will print one per line. These can be used for the -f modifier.
+
+

@@ -3,7 +3,7 @@
 #include "SIMDBase.h"
 
 namespace zsoundproc {
-	FFT_wrapper * FFT::constructor(State & state, bool & managed){
+	FFTCore * FFT::constructor(State & state, bool & managed){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TNUMBER>(1)){
 			if (stack->is<LUA_TNUMBER>(2)){
@@ -12,27 +12,27 @@ namespace zsoundproc {
 					state.error("Can't use DFT_FLAG_FORCE_RECURSIVE and DFT_FLAG_FORCE_COBRA at the same time!");
 				}
 					
-				return new FFT_wrapper(stack->to<int>(1), flags);
+				return new FFTCore(stack->to<int>(1), flags);
 			}
 			else{
-				return new FFT_wrapper(stack->to<int>(1));
+				return new FFTCore(stack->to<int>(1));
 			}
 		}
 		else{
-			return new FFT_wrapper();
+			return new FFTCore();
 		}
 	}
 
-	void FFT::destructor(State & state, FFT_wrapper * object){
+	void FFT::destructor(State & state, FFTCore * object){
 		delete object;
 	}
 
-	int FFT::getExecutionPlan(State & state, FFT_wrapper * object){
+	int FFT::getExecutionPlan(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->pushLString(object->writeExecutionPlan());
 		return 1;
 	}
-	int FFT::setExecutionPlan(State & state, FFT_wrapper * object){
+	int FFT::setExecutionPlan(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TSTRING>(1)){
 			object->readExecutionPlan(stack->toLString(1));
@@ -40,7 +40,7 @@ namespace zsoundproc {
 		return 0;
 	}
 
-	int FFT::getInput(State & state, FFT_wrapper * object){
+	int FFT::getInput(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		REAL_matrix & matrix = object->inputMatrix;
 		stack->newTable(); {
@@ -74,7 +74,7 @@ namespace zsoundproc {
 		}
 		return 1;
 	}
-	int FFT::setInput(State & state, FFT_wrapper * object){
+	int FFT::setInput(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TTABLE>(1)){
 			REAL_matrix & matrix = object->inputMatrix;
@@ -121,7 +121,7 @@ namespace zsoundproc {
 		return 0;
 	}
 
-	int FFT::getOutput(State & state, FFT_wrapper * object){
+	int FFT::getOutput(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		REAL_matrix & matrix = object->outputMatrix;
 		stack->newTable(); {
@@ -155,7 +155,7 @@ namespace zsoundproc {
 		return 1;
 	}
 
-	int FFT::setOutput(State & state, FFT_wrapper * object){
+	int FFT::setOutput(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TTABLE>(1)){
 			REAL_matrix & matrix = object->outputMatrix;
@@ -202,7 +202,7 @@ namespace zsoundproc {
 		return 0;
 	}
 
-	int FFT::execute(State & state, FFT_wrapper * object){
+	int FFT::execute(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TNUMBER>(1)){
 			object->execute(stack->to<int>(1));
@@ -213,73 +213,73 @@ namespace zsoundproc {
 		return 0;
 	}
 
-	int FFT::getDataType(State & state, FFT_wrapper * object){
+	int FFT::getDataType(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_TYPE));
 		return 1;
 	}
 
-	int FFT::getMode(State & state, FFT_wrapper * object){
+	int FFT::getMode(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_MODE));
 		return 1;
 	}
 
-	int FFT::getFFTLength(State & state, FFT_wrapper * object){
+	int FFT::getFFTLength(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_FFT_LENGTH));
 		return 1;
 	}
 
-	int FFT::getIsRealTransform(State & state, FFT_wrapper * object){
+	int FFT::getIsRealTransform(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_IS_REAL_TRANSFORM));
 		return 1;
 	}
 
-	int FFT::getNoBitTraversal(State & state, FFT_wrapper * object){
+	int FFT::getNoBitTraversal(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_NO_BIT_REVERSAL));
 		return 1;
 	}
 
-	int FFT::getTestRun(State & state, FFT_wrapper * object){
+	int FFT::getTestRun(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getPlanParam(DFT_PARAMID_TEST_RUN));
 		return 1;
 	}
 
-	int FFT::getModeMax(State & state, FFT_wrapper * object){
+	int FFT::getModeMax(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_MODE_MAX));
 		return 1;
 	}
-	int FFT::getTypeAvailability(State & state, FFT_wrapper * object){
+	int FFT::getTypeAvailability(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_TYPE_AVAILABILITY));
 		return 1;
 	}
-	int FFT::getSizeOfReal(State & state, FFT_wrapper * object){
+	int FFT::getSizeOfReal(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_SIZE_OF_REAL));
 		return 1;
 	}
-	int FFT::getSizeOfVect(State & state, FFT_wrapper * object){
+	int FFT::getSizeOfVect(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_SIZE_OF_VECT));
 		return 1;
 	}
-	int FFT::getVectorLen(State & state, FFT_wrapper * object){
+	int FFT::getVectorLen(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_VECTOR_LEN));
 		return 1;
 	}
-	int FFT::getModeAvailability(State & state, FFT_wrapper * object){
+	int FFT::getModeAvailability(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<int>(object->getModeParam(SIMDBase_PARAMID_MODE_AVAILABILITY));
 		return 1;
 	}
-	int FFT::getModeName(State & state, FFT_wrapper * object){
+	int FFT::getModeName(State & state, FFTCore * object){
 		Stack * stack = state.stack;
 		stack->push<const std::string &>(object->getMode());
 		return 1;

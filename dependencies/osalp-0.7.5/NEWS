@@ -1,0 +1,17 @@
+This release 0.7.3 of the Open Source Audio Library Project.
+
+New to this release: 
+
+ - Support for reading ogg-vorbis files.
+ - aflibDebug class for added flexibility in printing error descriptions.
+ - Added test scripts to the osalp example program.
+ 
+There have also have been many bug fixes.  Read the ChangeLog for
+more information.
+
+Also we have had a changing of the guard.  Bruce Forsberg the primary 
+author of osalp has retired to focus on other projects.  As a result 
+osalp is currently maintained by Darrick Servis. 
+
+Enjoy
+--Darrick Servis <darrick@dcn.davis.ca.us>

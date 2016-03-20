@@ -1,0 +1,7 @@
+#!/bin/csh
+
+setenv PATH ${PATH}:.
+setenv LD_LIBRARY_PATH /usr/local/lib
+setenv AFLIB_MODULE_FILE_DIR /usr/local/lib/aflib
+osalp $*
+

@@ -1,0 +1,153 @@
+This is the software for the Open Source Audio Library Project. This is a beta
+release. It is hoped that this program will inspire others to join the Open
+Source Audio Library Project to build a first class set of C++ classes and
+libraries to handle all the fundamentals of a sound application.  
+
+Any questions should be directed to:
+
+Darrick Servis
+darrick@kdvs.org
+
+OSALP was originally designed and created by Bruce Forsberg.
+
+REQUIREMENTS
+
+Currently this library is known to run on:
+  Linux on Intel
+  Linux on Sparc
+  FreeBSD
+  Solaris Sparc
+Reports of other successes are welcome.
+
+This version requires the following software:
+
+Motif or Lesstif (To build the sample applications)
+  -- Lesstif available from http://www.lesstif.org
+  -- Motif available from http://www.opengroup.org/openmotif
+C++ Compiler with STL (Standard Template Library)
+
+Different file formats require the following
+
+MPEG player (mpg123 version 0.59r or later, for the mpg123 module)
+  -- Available from http://www.mpg123.de
+MPEG encoder (lame version 3.51 or later, to record mp3's)
+  -- Available from http://www.sulaco.org/mp3
+MPEG encoder (blade version 0.91 or later, to record mp3's)
+  -- Available from  http://bladeenc.mp3.no
+
+COMPILE & INSTALLATION
+
+To compile perform the following at this directory:
+./configure
+make
+make install (as root)
+
+For SOLARIS:
+If you use gcc and have installed it in /usr/local then you
+might need to set the following:
+setenv LD_LIBRARY_PATH /usr/local/lib
+setenv LD /usr/local/bin/g++
+
+For FreeBSD
+For the sample applications you will need to remove the -ldl line
+from the Makefiles.
+
+This version currently only supports Linux, FreeBSD, and Solaris Sparc.
+
+Reading and writing to audio files and devices is done via stand-alone 
+modules and you can choose which ones to install.  The configure script
+by default will try to compile and install as many as are supported on
+your machine.
+
+-- Audio Devices ---
+OSS Device (Linux and FreeBSD)  
+Solaris Sparc sound device	
+
+-- Formats Based on the Audiofile Library --
+MS Wave format
+AIFF
+AIFF-C
+AU
+
+NOTE: the audiofile library is included as source in this distribution.
+
+-- Formats readable by the soundtools library module <aflibSoxFile.so>-- 
+
+SGI/Apple AIFF Sound File
+a-law byte raw
+ALSA /dev/snd/pcmXX Device
+SPARC .au with header
+Sox Module Sound File Detection
+CDDA Audio
+Cont. Varible Slope Delta
+Cont. Varible Solot Delta
+Text Data Samples
+GSM 06.10
+Mac FSSD/HCOM
+Inverse a-law byte raw
+Inverse u-law byte raw
+Amiga MAUD
+Amiga 8SVX
+Sound Blaster .VOC
+Microsoft RIFF
+Pison .wve
+Yamaha TX16W and SY99 Sound Files
+OSS /dev/dsp Device
+Raw File.  Must specify rate, channels and byte type.
+Raw Signed Bytes
+Raw Signed Longs
+IRCAM Sound File
+SampleVision Sound File
+Sndtool Sound File
+NIST Sphere Sound File
+Sun /dev/audio Device
+
+NOTE: To compile the aflibSoxFile module.
+
+Download sox-12.17.3 or higher.
+
+http://sourceforge.net/projects/sox
+
+untar sox source.
+
+configure and compile sox (you don't need to install it).
+
+cd to the root of the osalp source.
+
+./configure --with-libst=<path to sox source>
+make 
+make install
+
+compile and install the aflibSoxFile module.
+
+-- Misc. Formats --
+
+MPEG reader (one module based on mpg123 the other on Jung woo-jae's MPEG/WAVE library).
+MPEG writer (one module based on lame the other on blade).
+OGG-VORBIS (uses ogg-vorbis library).
+
+NOTE: The aflibLameFile uses the Lame encoder to write mp3's. The
+aflibBladeFile uses the Blade encoder to write mp3's. If you use either of the
+mp3 formats then you will need to make sure that your PATH environment variable
+is set to where these applications are located. The mpg and mpg123 modules read
+mp3's.
+
+SAMPLE APPLICATIONS
+
+There are three sample applications. They are in the player, editor, and osalp
+directories. Perform a "make" in these directories in order to run these. Then
+execute the s script to run the program.
+
+
+There are many combinations with the sample application that don't work right. These
+will be fixed in due time.
+
+LICENSE
+
+Each source file should be examined to determine what license applies.
+All the code under formatlib and aflib is LGPL (see COPYING.LIB in this
+directory) except the FFT class which is in the public domain.
+
+The source code in app, editor, and player is in the public domain
+since they serve as examples of how to use this library.
+
